@@ -71,13 +71,10 @@ public final class LuceneUtil {
 
     //    @SuppressWarnings("all")
     public static <T> List<T> query(String property, String value, int limits, Class<T> resultType) {
-        QueryParser queryParser = new QueryParser(property, standardAnalyzer);
         IndexSearcher indexSearcher = getIndexSearcher();
-        Query query;
         TopDocs topDocs;
         try {
-            query = queryParser.parse(value);
-            topDocs = indexSearcher.search(query, limits);
+            topDocs = indexSearcher.search(new QueryParser(property, standardAnalyzer).parse(value), limits);
         } catch (Exception e) {
             throw new AppRuntimeException(e);
         }
